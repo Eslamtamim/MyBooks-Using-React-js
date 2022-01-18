@@ -1,11 +1,15 @@
 import React from 'react'
 import { Component } from 'react/cjs/react.production.min'
-import { useState, useEffect } from 'react'
+// import { useState, useEffect } from 'react'
+// import Selectbtn from './Selectbtn';
+import { Link } from "react-router-dom";
+import CurrentlyReading from "./CurrentlyReading";
+import WantToRead from "./WantToRead";
+import Read from "./Read";
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import {  Route } from 'react-router-dom'
 import Searchpage from './searchpage'
-import Mainpage from './mainpage'
 
 
 class BooksApp extends Component {
@@ -24,44 +28,82 @@ componentDidMount(){
       books,
       CurrentlyReadingbooks: books.filter((e)=>{return e.shelf === "currentlyReading"}),
       WantToReadbooks: books.filter((e)=>{return e.shelf === "wantToRead"}),
-      Readbooks: books.filter((e)=>{return e.shelf === "read"})
-    }))
-
-  })
- }
-
-//  componentDidupdate(){
-//    BooksAPI.update( this.state.books.map(e=>e.id), 'wantToRead')
-//    .then((books)=>{
-//      this.setState((pre)=>({
-//       WantToReadbooks: pre.books.filter(e=>e.shelf === "wantToRead")
-//      }))
-//    })
-//  }
- 
+      Readbooks: books.filter((e)=>{return e.shelf === "read"})}))})}
 
 
- 
+      updatebookshelf = (book, shelf)=>{
+          this.setState((pre)=>({
+           books : pre.books.filter(e=>{
+             return e.id !== book.id 
+           })
+          }))
+        
 
-  render()
-  {  
+        BooksAPI.update(book, shelf)
+        
+        }
+      
+
+
+
+  render(){
+
     const {books , CurrentlyReadingbooks,WantToReadbooks,Readbooks} = this.state 
     return (
       <div className="app">
 
           <Route exact path='/' render={() => (
-          <Mainpage
-          books= {books}
-          CurrentlyReadingbooks= {CurrentlyReadingbooks}
-          WantToReadbooks= {WantToReadbooks}
-          Readbooks= {Readbooks}/>
+            <div className="list-books">
+            <div className="list-books-title">
+              <h1>MyReads</h1>
+            </div>
+            <div className="list-books-content">
+              
+              
+              <div>
+                <CurrentlyReading
+                books= {books}
+                CurrentlyReadingbooks= {CurrentlyReadingbooks}
+                updatebookshelf = {this.updatebookshelf}
+                />
+                <WantToRead
+                books= {books}
+                WantToReadbooks= {WantToReadbooks}
+                updatebookshelf = {this.updatebookshelf}
+                />
+                <Read
+                books= {books}
+                Readbooks= {Readbooks}
+                updatebookshelf = {this.updatebookshelf}
+                />
+              </div>
+
+
+              
+            </div>
+            <div className="open-search">
+              <Link to = '/search'><button>Add a book</button> </Link>
+            </div>
+          </div>  
         )}
         />
         <Route  path='/search'
         render={() => (
-            <Searchpage/>
+            <Searchpage 
+            books= {books}
+            // updatebookshelf = {this.updatebookshelf}
+            />
             )} 
         />
+        {/* <Route  
+        render={() => (
+            <Selectbtn 
+            books= {books}
+            updatebookshelf = {this.updatebookshelf}
+            />
+            )} 
+        /> */}
+        
         
       </div>
     )
@@ -70,13 +112,7 @@ componentDidMount(){
 
 
 
-
-
-
-
-
 // const BooksApp = () =>{
-
 // const [books, setbooks] = useState([]);
 // const [CurrentlyReadingbooks, setCurrentlyReadingbooks] = useState([]);
 // const [WantToReadbooks, setWantToReadbooks] = useState([]);
@@ -145,5 +181,13 @@ componentDidMount(){
 
 // }
 
+//  componentDidupdate(){
+//    BooksAPI.update( this.state.books.map(e=>e.id), 'wantToRead')
+//    .then((books)=>{
+//      this.setState((pre)=>({
+//       WantToReadbooks: pre.books.filter(e=>e.shelf === "wantToRead")
+//      }))
+//    })
+//  }
 
 export default BooksApp;

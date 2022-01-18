@@ -2,14 +2,39 @@ import React from "react";
 import Selectbtn from "./Selectbtn";
 
 const CurrentlyReading = (props) => {
-
+const {CurrentlyReadingbooks, updatebookshelf} = props
 return(
-    <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-
-                
+<div className="bookshelf">
+<h2 className="bookshelf-title">Currently Reading</h2>
 
                   <div className="bookshelf-books">
+                    <ol className="books-grid">
+                      {CurrentlyReadingbooks.map(e=>{
+                        return (<li key={e.id}>
+                          <div className="book">
+                            <div className="book-top">
+                              <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${e.imageLinks.smallThumbnail})`  }}></div>
+                              <div className="book-shelf-changer">
+                              <Selectbtn updatebookshelf = {updatebookshelf}/>
+                              </div>
+                            </div>
+                            <div className="book-title">{e.title}</div>
+                            <div className="book-authors">{e.authors.join(", ")}</div>
+                          </div>
+                        </li> )
+                      })}
+                    </ol>
+                    
+
+                  </div>
+                  {console.log(CurrentlyReadingbooks)}
+
+
+
+
+
+
+                  {/* <div className="bookshelf-books">
                     <ol className="books-grid">
                       <li>
                         <div className="book">
@@ -36,7 +61,7 @@ return(
                         </div>
                       </li>
                     </ol>
-                  </div>
+                  </div> */}
                 </div>
 )
 }
