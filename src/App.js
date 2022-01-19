@@ -1,7 +1,7 @@
 import React from 'react'
 import { Component } from 'react/cjs/react.production.min'
 // import { useState, useEffect } from 'react'
-// import Selectbtn from './Selectbtn';
+import Selectbtn from './Selectbtn';
 import { Link } from "react-router-dom";
 import CurrentlyReading from "./CurrentlyReading";
 import WantToRead from "./WantToRead";
@@ -16,9 +16,11 @@ class BooksApp extends Component {
 
 state = {
   books :[],
-  CurrentlyReadingbooks :[],
-  WantToReadbooks : [],
-  Readbooks:[],
+  ids:[],
+  // CurrentlyReadingbooks :[],
+  // WantToReadbooks : [],
+  // Readbooks:[],
+  // btnrender:false
   
 }
 componentDidMount(){
@@ -26,27 +28,35 @@ componentDidMount(){
     .then((books) =>{
     this.setState(()=>({
       books,
-      CurrentlyReadingbooks: books.filter((e)=>{return e.shelf === "currentlyReading"}),
-      WantToReadbooks: books.filter((e)=>{return e.shelf === "wantToRead"}),
-      Readbooks: books.filter((e)=>{return e.shelf === "read"})}))})}
+      ids:books.map(e=>e.id)
+      // CurrentlyReadingbooks: books.filter((e)=>{return e.shelf === "currentlyReading"}),
+      // WantToReadbooks: books.filter((e)=>{return e.shelf === "wantToRead"}),
+      // Readbooks: books.filter((e)=>{return e.shelf === "read"})
+    }))})}
 
 
-      updatebookshelf = (book, shelf)=>{
-          this.setState((pre)=>({
-           books : pre.books.filter(e=>{
-             return e.id !== book.id 
-           })
-          }))
+        updateshelf = (book, shelf)=>{
+          this.state.books.map(e=>{
+            return e.id !== book.id ? book.shelf = shelf: ""
+          })
+
+          this.forceUpdate()
+          BooksAPI.update(book, shelf)
+
+          }
         
 
-        BooksAPI.update(book, shelf)
         
-        }
+        // forceUpdate =()=>{
+        //   books.forceUpdate()
+        // }
+        
       
 
 
 
   render(){
+    // console.log(this.state.books);
 
     const {books , CurrentlyReadingbooks,WantToReadbooks,Readbooks} = this.state 
     return (
@@ -62,19 +72,22 @@ componentDidMount(){
               
               <div>
                 <CurrentlyReading
-                books= {books}
-                CurrentlyReadingbooks= {CurrentlyReadingbooks}
-                updatebookshelf = {this.updatebookshelf}
+                books= { books.filter((e)=>{return e.shelf === "currentlyReading"})}
+                // CurrentlyReadingbooks= {CurrentlyReadingbooks}
+                updateshelf = {this.updateshelf}
+                // forceUpdate= {this.forceUpdate}
                 />
                 <WantToRead
-                books= {books}
-                WantToReadbooks= {WantToReadbooks}
-                updatebookshelf = {this.updatebookshelf}
+                books= { books.filter((e)=>{return e.shelf === "wantToRead"})}
+                // WantToReadbooks= {WantToReadbooks}
+                updateshelf = {this.updateshelf}
+                // forceUpdate= {this.forceUpdate}
                 />
                 <Read
-                books= {books}
-                Readbooks= {Readbooks}
-                updatebookshelf = {this.updatebookshelf}
+                books= { books.filter((e)=>{return e.shelf === "read"})}
+                // Readbooks= {Readbooks}
+                updateshelf = {this.updateshelf}
+                // forceUpdate= {this.forceUpdate}
                 />
               </div>
 
@@ -91,18 +104,17 @@ componentDidMount(){
         render={() => (
             <Searchpage 
             books= {books}
-            // updatebookshelf = {this.updatebookshelf}
             />
             )} 
         />
-        {/* <Route  
-        render={() => (
-            <Selectbtn 
+         
+        
+            {/* <Selectbtn 
             books= {books}
-            updatebookshelf = {this.updatebookshelf}
-            />
-            )} 
-        /> */}
+            updateshelf = {this.updateshelf}
+            /> */}
+      
+       
         
         
       </div>

@@ -1,6 +1,10 @@
 import React,{Component} from "react";
 import { Link } from "react-router-dom";
+// import { search } from "./BooksAPI";
 import Selectbtn from "./Selectbtn";
+import * as BooksAPI from "./BooksAPI"
+
+
 class Searchpage extends Component {
 
     state = {
@@ -11,20 +15,35 @@ class Searchpage extends Component {
         query: query.trim(),
       }));
     };
-
     clearQuery = (query)=>{
       this.setState(()=>({
         query: ""
       }))
     }
+    // search = ()=>{
+    //   BooksAPI.search()
+    //   .then((query)=>{
+    //     this.setState(()=>({
+    //       query
+    //     }))
+    //   })
+    // }
+    // clearQuery = (query)=>{
+    //   this.setState(()=>({
+    //     query: ""
+    //   }))
+    // }
+
+
+
     render(){
       const {query} = this.state
 
       const {books} = this.props
 
-      const showbookstitle = query === "" ? [] : books.filter(e=>e.title.toLowerCase().includes(query.toLowerCase())) || books.filter(e=>e.authors.join("").toLowerCase().includes(query.toLowerCase()))
+      const showbookstitle = query === "" ? [] : books.filter(e=>e.title.toLowerCase().includes(query.toLowerCase()))
       // const showbooksauthors = query === "" ? []: books.filter(e=>e.authors.join("").toLowerCase().includes(query.toLowerCase())) 
-
+      
   return (
     <div className="search-books">
       <div className="search-books-bar">
@@ -36,7 +55,8 @@ class Searchpage extends Component {
           type="text"
           placeholder="Search by title or author"
           value={query}
-          onChange={(event)=>this.updateQuery(event.target.value)}
+          onChange={(event)=>this.updateQuery(event.target.value)
+          }
           />
         </div>
       </div>

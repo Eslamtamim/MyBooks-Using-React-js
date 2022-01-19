@@ -1,26 +1,21 @@
 import React from "react";
 import Selectbtn from "./Selectbtn";
+import Book from "./book";
+
  const Read = (props) =>{
-   const { Readbooks } = props
+   const { books ,updateshelf,forceUpdate} = props
      return(
         <div className="bookshelf">
         <h2 className="bookshelf-title">Read</h2>
         <div className="bookshelf-books">
                     <ol className="books-grid">
-                      {Readbooks.map(e=>{
-                        return (<li key={e.id}>
-                          <div className="book">
-                            <div className="book-top">
-                              <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${e.imageLinks.smallThumbnail})`  }}></div>
-                              <div className="book-shelf-changer">
-                              <Selectbtn/>
-                              </div>
-                            </div>
-                            <div className="book-title">{e.title}</div>
-                            <div className="book-authors">{e.authors.join(", ")}</div>
-                          </div>
-                        </li> )
+
+
+                      {books.map(e=>{
+                        return (<Book e= {e} updateshelf={updateshelf} forceUpdate = {forceUpdate}/>)
                       })}
+
+
                     </ol>
                     
 
