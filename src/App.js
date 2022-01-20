@@ -21,11 +21,14 @@ class BooksApp extends Component {
 
   updateshelf = (book, shelf) => {
     let rnindex = this.state.books.findIndex((e)=> e.id === book.id)
+    let lastbook = this.state.books
+
     if(rnindex === -1){
       book.shelf = shelf
-      this.state.books.push(book)
+
+      lastbook.push(book)
     }else{
-      this.state.books[rnindex].shelf = shelf
+      lastbook[rnindex].shelf = shelf
     }
 
 
