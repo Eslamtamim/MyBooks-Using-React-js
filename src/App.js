@@ -21,14 +21,22 @@ class BooksApp extends Component {
 
   updateshelf = (book, shelf) => {
     let rnindex = this.state.books.findIndex((e)=> e.id === book.id)
-    let lastbook = this.state.books
+    // let lastbooks = this.state.books
 
     if(rnindex === -1){
       book.shelf = shelf
+      this.setState(pre=>({
+      books: pre.books.concat(book)
+      }))
 
-      lastbook.push(book)
+
     }else{
-      lastbook[rnindex].shelf = shelf
+
+    //  this.setState((pre)=>({
+    //    books: pre.books[rnindex].shelf =  shelf
+    //  }))
+
+    this.state.books.map(e=>e.shelf)[rnindex] = shelf
     }
 
 
