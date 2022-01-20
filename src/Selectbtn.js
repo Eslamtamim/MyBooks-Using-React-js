@@ -5,7 +5,7 @@ const Selectbtn = (props) => {
   return (
     <div>
       <select
-        defaultValue={book.shelf}
+        defaultValue={book.shelf ? book.shelf : "none"}
         onChange={(option) => updateshelf(book, option.target.value)}
       >
         <option value="move" disabled>

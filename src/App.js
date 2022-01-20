@@ -13,15 +13,23 @@ class BooksApp extends Component {
   state = {
     books: [],
   };
-  componentDidMount() {
-    BooksAPI.getAll().then((books) => {
-      this.setState(() => ({
-        books,
-      }));
-    });
+
+  async componentDidMount() {
+    const books = await BooksAPI.getAll();
+    this.setState({ books });
   }
 
   updateshelf = (book, shelf) => {
+    let rnindex = this.state.books.findIndex((e)=> e.id === book.id)
+    if(rnindex === -1){
+      book.shelf = shelf
+      this.state.books.push(book)
+    }else{
+      this.state.books[rnindex].shelf = shelf
+    }
+
+
+    this.setState((pre)=>({books:pre.books}))
     this.state.books.map((e) => {
       return e.id !== book.id ? (book.shelf = shelf) : "";
     });

@@ -22,12 +22,11 @@ const Searchpage = (props) => {
           }
         }
       }
-
+      
       setallbooks(searchResults);
     });
     setquery(query);
   };
-
   console.log(allbooks);
   return (
     <div className="search-books">
